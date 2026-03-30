@@ -1,0 +1,92 @@
+.editor-overlay{
+    position: fixed;
+    background-color: red;
+    
+    background-color: rgba(7, 0, 8, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    inset: 0;
+
+}
+
+
+.note-editor{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background-color: hsl(256, 27%, 33%);
+    height: 90%;
+    width: 97%;
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 5px;
+    
+}
+
+.title-editor{
+    height: 60px;
+    border-radius: 20px 20px 10px 10px;
+    border: solid;
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-family: roboto;
+    font-size: 18px;
+    font-weight: 400;
+    
+}
+
+.description-editor{
+    height: 100%;
+    border-radius: 10px 10px 20px 20px;
+    border: solid;
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    resize: none;
+
+    color: rgb(255, 255, 255);
+    font-family: roboto;
+    font-size: 16px;
+    font-weight: 400;
+
+    background-color: rgba(0, 0, 0, 0);
+
+}
+
+.time{
+    color: white;
+    font-family: roboto;
+    font-size: 14px;
+    font-weight: 400;
+    align-self: end;
+    padding-right: 10px;
+    height: 20px;
+    line-height: 20px;
+    margin: 5px;
+}
+
+
+.description-editor::placeholder{
+    color: rgb(255, 255, 255);
+    font-family: roboto;
+}
+
+.title-editor::placeholder{
+    color: rgb(255, 255, 255);
+    font-weight: normal;
+    font-family: roboto;
+}
+
+.title-editor:focus{
+    outline: none;
+}
+.description-editor:focus{
+    outline: none;
+}
+

@@ -1,0 +1,233 @@
+.nav-bar{
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    font-family: roboto;
+    font-size: 25px;
+    font-weight: 900;
+    color: white;
+ 
+}
+
+.note-maker{
+    display: grid;
+    margin: 0;
+    padding: 8px;
+    gap: 8px;
+    max-width: 600px;
+    width: 100%;
+    
+}
+
+.title-box{
+        
+    height: 50px;
+    color: rgb(255, 255, 255);
+    
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(53, 70, 79);
+    background-color: rgb(1, 30, 37);
+    padding: 8px;
+    
+    font-family: monospace;
+    font-size: 14px;
+    
+
+}
+.description-box{
+
+    height: 200px;
+    color: rgb(255, 255, 255);
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(53, 70, 79);
+    background-color: rgb(1, 30, 37);
+    padding: 8px;
+    font-family: monospace;
+    font-size: 14px;
+    resize: none;
+    
+}
+.add-btn{
+    color: white;
+    background-color: rgb(26, 127, 181);
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(87, 190, 245);
+    height: 44px;
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 500;
+    transition: 0.2s;
+
+}
+.add-btn:active{
+    transform: scale(0.95);
+}
+
+.note-section{
+    margin-top: 15px;
+    
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  
+
+}
+@media (min-width: 700px)
+{
+    .note-section{
+        margin-top: 80px;
+    }
+
+    .message-container{
+        top: 80px;
+        right: 50px;
+        width: 300px;
+    }
+}
+
+.no-notes{
+    
+    background-color: rgb(138, 198, 194);
+    margin-top: 50px;
+    height: 300px;
+    width: 1000px;
+    max-width: 97%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+
+}
+
+.notes-loading{
+    background-color: rgba(255, 255, 255, 0);
+    margin-top: 50px;
+    height: 300px;
+    width: 1000px;
+    max-width: 97%;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+}
+
+.notes-loading{
+    color: #00000000;
+}
+
+
+
+.message-container{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 200px;
+    width: 300px;
+    gap: 8px;
+
+}
+
+.no-notes-icon{
+    width: 110px;
+}
+
+.no-notes p{
+    color: rgb(0, 0, 0);
+    font-family: Roboto;
+    font-size: 15px;
+}
+
+.title-box::placeholder{
+    color: rgb(182, 182, 182);
+    font-family: monospace;
+}
+
+.description-box::placeholder{
+    color: rgb(182, 182, 182);
+    font-family: monospace;
+    font-weight: normal;
+}
+
+.title-box:focus{
+    outline: none;
+}
+
+.description-box:focus{
+    outline: none;
+}
+
+
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 60px;
+  aspect-ratio: .5;
+  display: grid;
+}
+.loader:before {
+  content: "";
+  width: 30%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin: auto auto 0;
+  background: rgb(26, 127, 181);
+  animation: l9-0 .5s cubic-bezier(0,800,1,800) infinite;
+}
+.loader:after {
+  content: "";
+  width: 100%;
+  aspect-ratio: 1/cos(30deg);
+  margin: 0 auto auto;
+  clip-path: polygon(50% -50%,100% 50%,50% 150%,0 50%);
+  background: #6f3686;
+  animation: l9-1 .5s linear infinite;
+}
+@keyframes l9-0 {
+  0%,2%  {translate: 0   0%}
+  98%,to {translate: 0 -.2%}
+}
+@keyframes l9-1 {
+  0%,5%  {rotate:  0deg}
+  95%,to {rotate:-60deg}
+}
+
+
+
+
+/* HTML: <div class="loader"></div> */
+.empty-note-eyes {
+  display: inline-flex;
+  gap: 10px;
+}
+.empty-note-eyes:before,
+.empty-note-eyes:after {
+  content: "";
+  height: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(farthest-side,#000 95%,#0000) 35% 35%/6px 6px no-repeat
+    #fff;
+  animation: l5 3s infinite;
+}
+@keyframes l5 {
+  0%,11%   {background-position:35% 35%}
+  14%,36%  {background-position:65% 35%}
+  38%,61%  {background-position:65% 65%}
+  64%,86%  {background-position:35% 65%}
+  88%,100% {background-position:35% 35%}
+}
