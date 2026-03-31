@@ -16,7 +16,7 @@ export default function NoteMaker()
     const [loading, setLoading] = useState(true);
     const [selectedNote, setSelectedNote] = useState(null);
 
-    const BACKEND_URL = "https://make-notes-y62j.onrender.com/";
+    const BACKEND_URL = "https://make-a-note.onrender.com/";
     
 
     //this part handles alert notifications
