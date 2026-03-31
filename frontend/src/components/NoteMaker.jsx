@@ -15,6 +15,8 @@ export default function NoteMaker()
     const [message, setMessage] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedNote, setSelectedNote] = useState(null);
+
+    const BACKEND_URL = "https://make-notes-y62j.onrender.com/";
     
 
     //this part handles alert notifications
@@ -60,7 +62,7 @@ export default function NoteMaker()
         //adding new note through backend using post route
         try
         {
-            const res = await fetch("http://localhost:5000/api/notes",
+            const res = await fetch(`${BACKEND_URL}api/notes`,
             {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
@@ -87,7 +89,7 @@ export default function NoteMaker()
     {
         try
         {
-            const res = await fetch(`http://localhost:5000/api/notes/${id}`,
+            const res = await fetch(`${BACKEND_URL}api/notes/${id}`,
                 {method: "DELETE"}
             );
             if(res.ok)
@@ -117,7 +119,7 @@ export default function NoteMaker()
         {
             try
             {
-                const res = await fetch("http://localhost:5000/api/notes");
+                const res = await fetch(`${BACKEND_URL}api/notes`);
                 const data = await res.json();
                 setNotes(data);
 
@@ -143,7 +145,7 @@ export default function NoteMaker()
     {
         try
         {
-            const res = await fetch(`http://localhost:5000/api/notes/${editedNote.id}`,
+            const res = await fetch(`${BACKEND_URL}api/notes/${editedNote.id}`,
                 {
                     method: "PUT",
                     headers: {"Content-Type": "application/json"},
