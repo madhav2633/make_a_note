@@ -65,14 +65,14 @@
     font-family: roboto;
     height: 22px;
     line-height: 22px;
-    width: 70%;
+
     color: rgb(255, 255, 255);
     font-size: 13px;
     font-weight: 300;
     margin: 0;
     
     bottom: 1px;
-    right: 1px;
+    right: 10px;
     
 }
 
