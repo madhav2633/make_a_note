@@ -4,16 +4,17 @@ import { useState } from "react";
 export default function NoteEditor({onClose, note, onSave})
 {
 
-    const [title, setTitle] = useState(note.title);
-    const [description, setDescription] = useState(note.description);
+    const [title, setTitle] = useState(note.title || "");
+    const [description, setDescription] = useState(note.description || "");
 
 
     const saveEditedNote = () =>
     {
+        const editedTitle = title.trim() === "" ? "untitled" : title.trim();
         const editedNote = 
         {
             ...note,
-            title: title.trim(),
+            title: editedTitle,
             description: description.trim()
         }
         
@@ -34,8 +35,7 @@ export default function NoteEditor({onClose, note, onSave})
                     />
                         
                     
-
-                    <textarea className="description-editor" placeholder="Moew meowss" 
+                    <textarea className="description-editor" 
                         value = {description}
                         onChange = {(e) => {setDescription(e.target.value)}}
                     />

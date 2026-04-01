@@ -17,7 +17,14 @@ router.post('/', async (req, res) =>
     try
     {
         const notes = await readNoteFile();
-        const newNote = req.body;
+        const {title, description} = req.body;
+        const newNote =
+            {
+                id: Date.now(),
+                title: title,
+                description: description,
+                timeStamp: new Date().toLocaleString()
+            }
         notes.push(newNote);
         await writeNoteFile(notes);
         res.status(201).json(newNote);
@@ -29,7 +36,7 @@ router.post('/', async (req, res) =>
 });
 
 
-    //UPDATE
+    //UPDATE(PUT) NOTE
 router.put('/:id', async (req, res) =>
 {
     try
@@ -71,6 +78,10 @@ router.delete('/:id', async (req, res) =>
         const id = Number(req.params.id);
         const notes = await readNoteFile();
         const updatedNotes = notes.filter(note => note.id !== id);
+        if(updatedNotes.length === notes.length)
+        {
+            return res.status(404).json({error: "This note was already deleted."});
+        }
         await writeNoteFile(updatedNotes);
 
         res.json({message: "Note deleted successfully."});

@@ -4,6 +4,8 @@ import NoteCard from "./NoteCard";
 import MessageBox from "./MessageBox";
 import NoteEditor from "./NoteEditor";
 
+import {deleteNote, createNote, fetchNotes, editNote} from "../services/note-service";
+
 
 
 
@@ -16,9 +18,6 @@ export default function NoteMaker()
     const [loading, setLoading] = useState(true);
     const [selectedNote, setSelectedNote] = useState(null);
 
-    const BACKEND_URL = "https://make-a-note.onrender.com/";
-    
-
     //this part handles alert notifications
     const alerts =
     {
@@ -27,7 +26,8 @@ export default function NoteMaker()
         emptyNote: "Failed: Cannot create empty note.",
         serverErrorSaver: "Server error: Could not save note.",
         serverErrorDeleter: "Server error: Could not delete.",
-        serverErrorUpdater: "Server error: Could not update note."
+        serverErrorUpdater: "Server error: Could not update note.",
+        serverErrorNoteLoader: "Server error: Could not load notes."
     }
     const alertHandler = (alertType) =>
     {
@@ -41,8 +41,34 @@ export default function NoteMaker()
     }
 
 
+    //this part fetches data from the backend get route (API call)
+    useEffect(() =>
+        {
+        const loadNotes = async () =>
+        {
+            try
+            {
+                const data = await fetchNotes();    //fetchNote(API call) function is in note-service.js
+                setNotes(data);
+                //fake loading notes message
+                setTimeout(() =>
+                {
+                    setLoading(false);
+                }, 1500);
+            }
+            catch(err)
+            {
+                alertHandler(alerts.serverErrorNoteLoader);
+                console.error(err);
+                setLoading(false);
+            };
+            
+        };
+        loadNotes();
+    }, []);
+                
 
-    // this part handles note creation
+    // this part handles note creation (API call)
     const noteHandler = async () =>
     {
         //input validations
@@ -53,27 +79,18 @@ export default function NoteMaker()
         }
         const newNote =
         {
-            id: Date.now(),
             title: title.trim() || "untitled",
-            description: description.trim(),
-            timeStamp: new Date().toLocaleString()
+            description: description.trim()
         };
 
         //adding new note through backend using post route
         try
         {
-            const res = await fetch(`${BACKEND_URL}api/notes`,
-            {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(newNote)
-            });
-            
-            const savedNote = await res.json();
+            const savedNote = await createNote(newNote); //createNote(API call) function is in note-service.js
             setNotes(old => [...old, savedNote]);
 
             setTitle("");
-            setDescription(""); 
+            setDescription("");
         
         }catch(err)
         {
@@ -85,80 +102,31 @@ export default function NoteMaker()
 
 
     //this part handles note deletion process
-    const deleteNote = async (id) =>
+    const deleteHandler = async (id) =>
     {
         try
         {
-            const res = await fetch(`${BACKEND_URL}api/notes/${id}`,
-                {method: "DELETE"}
-            );
-            if(res.ok)
-            {
-                setNotes(old => old.filter(note => note.id !== id));
-                 alertHandler(alerts.noteDeleted);
-            }
-            else
-            {
-                alertHandler(alerts.serverErrorDeleter);
-                throw new Error("Failed to delete note."); 
-            };
+            await deleteNote(id); //deleteNote(API call) function is in note-service.js
+
+            setNotes(old => old.filter(note => note.id !== id));
+            alertHandler(alerts.noteDeleted);
 
         }catch(err)
         {
             console.error(err);
-            alertHandler(alerts.serverErrorDeleter);
+            alertHandler(err.message || alerts.serverErrorDeleter);
         }
+    };
 
 
-    }
-
-
-    //this part fetches data from the backend get route
-    useEffect(() => {
-        const fetchNotes = async () =>
-        {
-            try
-            {
-                const res = await fetch(`${BACKEND_URL}api/notes`);
-                const data = await res.json();
-                setNotes(data);
-
-                //fake loading notes message
-                setTimeout(() =>
-                    {
-                        setLoading(false);
-                    }, 1500);
-
-            }catch(err)
-            {
-                console.log(err);
-            }
-        };
-
-        fetchNotes();
-
-    }, []);
 
 
     //this part updates the note into the server using PUT route
-    const updateNote = async (editedNote) =>
+    const updateHandler = async (editedNote) =>
     {
         try
         {
-            const res = await fetch(`${BACKEND_URL}api/notes/${editedNote.id}`,
-                {
-                    method: "PUT",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(editedNote)
-                });
-
-            if(!res.ok)
-            {
-                alertHandler(alerts.serverErrorUpdater);
-                throw new Error("Failed to update note on server.");
-            };
-            
-            const savedNote = await res.json();
+            const savedNote = await editNote(editedNote);   //editNote(API call) function is in note-service.js
 
             setNotes(oldNotes => oldNotes.map(note => note.id === savedNote.id ? savedNote : note))
             
@@ -218,8 +186,10 @@ export default function NoteMaker()
                             <p>Soon this place will be full of ideas, poems or grocery list.</p>
                         </div>
                     :
-                        (notes.map(note => <NoteCard note = {note} key = {note.id}
-                        onDelete = {() => deleteNote(note.id)} 
+                        (notes
+                            .filter(note => note && note.id)
+                            .map(note => <NoteCard note = {note} key = {note.id}
+                        onDelete = {() => deleteHandler(note.id)} 
                         onOpen = {() => setSelectedNote(note)}
                         />)))
                     }
@@ -233,7 +203,7 @@ export default function NoteMaker()
                     }
 
                     {selectedNote && (<NoteEditor onClose = {() => setSelectedNote(null)}
-                        note = {selectedNote}   onSave = {updateNote}
+                        note = {selectedNote}   onSave = {updateHandler}
                     /> )}
         </>
     );
