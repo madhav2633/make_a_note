@@ -1,0 +1,60 @@
+.note-writer{
+    display: grid;
+    margin: 0 auto;
+    padding: 8px;
+    gap: 8px;
+    max-width: 600px;
+    width: 100%;
+    
+}
+
+.title-box{
+        
+    height: 50px;
+    color: rgb(255, 255, 255);
+    
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(53, 70, 79);
+    background-color: rgb(1, 30, 37);
+    padding: 8px;
+    
+    font-family: monospace;
+    font-size: 14px;
+    
+
+}
+.description-box{
+
+    height: 200px;
+    color: rgb(255, 255, 255);
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(53, 70, 79);
+    background-color: rgb(1, 30, 37);
+    padding: 8px;
+    font-family: monospace;
+    font-size: 14px;
+    resize: none;
+    
+}
+.add-btn{
+    color: white;
+    background-color: rgb(26, 127, 181);
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(87, 190, 245);
+    height: 44px;
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 500;
+    transition: 0.2s;
+
+}
+.add-btn:active{
+    transform: scale(0.95);
+}
+

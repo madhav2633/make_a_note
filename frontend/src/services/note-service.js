@@ -15,20 +15,20 @@ export async function fetchNotes()
 
 
 //POST API call to create notes
-export async function createNote(note)
+export async function createNote(noteTD)
 {
     const res = await fetch(`${BACKEND_URL}api/notes`,
         {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(note)
+            body: JSON.stringify(noteTD)    //sending title and description to server
         }
     );
     if(!res.ok)
     {
         throw new Error("Failed to create note on server.");
     }
-    return res.json();
+    return res.json(); //recieving id,title,description, timestamp
       
 };
 
@@ -46,14 +46,14 @@ export async function deleteNote(id)
     return data;
 };
 
-//PUT API call to edit notes
-export async function editNote(editedNote)
+//PUT API call to edit/update notes
+export async function editNote(modifiedNote)
 {
-    const res = await fetch(`${BACKEND_URL}api/notes/${editedNote.id}`,
+    const res = await fetch(`${BACKEND_URL}api/notes/${modifiedNote.id}`,
         {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(editedNote)
+            body: JSON.stringify(modifiedNote)
         }
     );
     const savedNote = await res.json();

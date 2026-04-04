@@ -1,12 +1,12 @@
 import "./MessageBox.css";
 
-export default function MessageBox({msg})
+export default function MessageBox({text, type})
 {
     
 
     return (
-            <div className = "message-box">
-                <p>{msg.msg}</p>
+            <div className = {`message-box ${type}`}>
+                <p>{text}</p>
             </div>
     )
 };

@@ -2,13 +2,11 @@
     position: relative;
     font-family: roboto;
     background-color: rgb(109, 40, 67);
-    height: 305px;
+    height: 300px;
     width: 250px;
     max-width: 48%;
-
-    display: flex;
-    flex-direction: column;
     
+
     border-radius: 10px;
     border-color: rgb(111, 132, 142);
     color: rgb(255, 255, 255);

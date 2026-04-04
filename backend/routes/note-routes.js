@@ -17,17 +17,17 @@ router.post('/', async (req, res) =>
     try
     {
         const notes = await readNoteFile();
-        const {title, description} = req.body;
+        const {title, description} = req.body; //reieving title and description from user
         const newNote =
             {
                 id: Date.now(),
                 title: title,
-                description: description,
+                description: description,       //attaching id and timestamp
                 timeStamp: new Date().toLocaleString()
             }
         notes.push(newNote);
-        await writeNoteFile(notes);
-        res.status(201).json(newNote);
+        await writeNoteFile(notes);     //writing into the notes.json file 
+        res.status(201).json(newNote);  //sending full note to client as confirmation
 
     }catch(err)
     {

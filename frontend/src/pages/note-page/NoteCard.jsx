@@ -1,9 +1,10 @@
 import "./NoteCard.css";
-import cross_icon from "../assets/cross_icon.png"
+import delete_icon from "../../assets/delete_icon.png";
+
 
 export default function NoteCard({note, onDelete, onOpen})
 {
-    
+
 
     return(
         <>
@@ -18,7 +19,7 @@ export default function NoteCard({note, onDelete, onOpen})
                 <h6 className="card-date">
                     {note.timeStamp}</h6>
                 
-                <img src={cross_icon}
+                <img src={delete_icon}
                 alt="cross_icon"
                 className="del-btn"
                 onClick= {onDelete}></img>
@@ -30,9 +31,5 @@ export default function NoteCard({note, onDelete, onOpen})
 
     );
 }
-
-
-
-
 
 

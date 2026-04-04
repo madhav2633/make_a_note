@@ -1,3 +1,13 @@
+.note-page{
+    width: 100%;
+    max-width: 1050px;
+    display: flex;
+    flex-direction: column;
+    
+    background-color: rgba(26, 21, 21, 0);
+    margin: 0 auto;
+}
+
 .nav-bar{
     display: flex;
     height: 50px;
@@ -11,77 +21,26 @@
  
 }
 
-.note-maker{
-    display: grid;
-    margin: 0;
-    padding: 8px;
-    gap: 8px;
-    max-width: 600px;
-    width: 100%;
-    
-}
-
-.title-box{
-        
-    height: 50px;
-    color: rgb(255, 255, 255);
-    
-    border-radius: 8px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: rgb(53, 70, 79);
-    background-color: rgb(1, 30, 37);
-    padding: 8px;
-    
-    font-family: monospace;
-    font-size: 14px;
-    
-
-}
-.description-box{
-
-    height: 200px;
-    color: rgb(255, 255, 255);
-    border-radius: 8px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: rgb(53, 70, 79);
-    background-color: rgb(1, 30, 37);
-    padding: 8px;
-    font-family: monospace;
-    font-size: 14px;
-    resize: none;
-    
-}
-.add-btn{
-    color: white;
-    background-color: rgb(26, 127, 181);
-    border-radius: 8px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: rgb(87, 190, 245);
-    height: 44px;
-    font-family: monospace;
-    font-size: 18px;
-    font-weight: 500;
-    transition: 0.2s;
-
-}
-.add-btn:active{
-    transform: scale(0.95);
-}
-
 .note-section{
     margin-top: 15px;
-    
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 6px;
-  
 
 }
+
+.message-container{
+    display: flex;
+    flex-direction: column-reverse;
+    position: fixed;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 8px;
+
+}
+
 @media (min-width: 700px)
 {
     .note-section{
@@ -89,11 +48,15 @@
     }
 
     .message-container{
-        top: 80px;
-        right: 50px;
-        width: 300px;
+        top: 100px;
+        right: 20px;
+        transform: none;
+        left: auto;
     }
 }
+
+
+
 
 .no-notes{
     
@@ -131,15 +94,6 @@
 
 
 
-.message-container{
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 200px;
-    width: 300px;
-    gap: 8px;
-
-}
 
 .no-notes-icon{
     width: 110px;
@@ -205,9 +159,6 @@
   95%,to {rotate:-60deg}
 }
 
-
-
-
 /* HTML: <div class="loader"></div> */
 .empty-note-eyes {
   display: inline-flex;
@@ -231,3 +182,4 @@
   64%,86%  {background-position:35% 65%}
   88%,100% {background-position:35% 35%}
 }
+

@@ -8,27 +8,29 @@ export default function NoteEditor({onClose, note, onSave})
     const [description, setDescription] = useState(note.description || "");
 
 
-    const saveEditedNote = () =>
+    const saveAndClose = () =>
     {
         const editedTitle = title.trim() === "" ? "untitled" : title.trim();
-        const editedNote = 
+        const editedData = 
         {
             ...note,
             title: editedTitle,
             description: description.trim()
         }
-        
-        onSave(editedNote);
+
+        onSave(editedData);
         onClose();
+        
+        
     }
 
 
 
     return (
 
-            <div className="editor-overlay" onClick={saveEditedNote}>
+            <div className="editor-overlay" onClick={saveAndClose}>
 
-                <div className="note-editor" onClick={(e) => e.stopPropagation()}>
+                <div className="note-editor-box" onClick={(e) => e.stopPropagation()}>
                     <input className="title-editor"
                         value = {title}
                         onChange = {(e) => {setTitle(e.target.value)}}
@@ -40,7 +42,7 @@ export default function NoteEditor({onClose, note, onSave})
                         onChange = {(e) => {setDescription(e.target.value)}}
                     />
                     
-                    <p className="time">Created at: 2024/05/21 17:42</p>
+                    <p className="time">Created at: {note.timeStamp}</p>
 
                 </div>
 

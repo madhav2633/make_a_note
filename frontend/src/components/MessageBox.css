@@ -1,20 +1,26 @@
 
 .message-box{
     background-color: rgb(6, 50, 62);
-    text-align: center;
     padding: 0px 20px 0px 20px;
+    height: 55px;
+    border-radius: 10px;
     font-family: roboto;
     font-weight: 500;
-    color: rgb(4, 211, 4);
+    color: rgb(255, 255, 255);
 
-    animation: fade-out 0.7s forwards; /*fades for 1 second*/
+    animation: fade-out 0.7s forwards;
     animation-delay: 2.3s;
+}   
 
-}
-
-@keyframes fade-out {
-
+@keyframes fade-out{
     from{opacity: 1;}
     to{opacity: 0;}
 }
 
+.message-box.success {
+    color: rgb(0, 210, 0);
+}
+
+.message-box.error {
+    color: rgb(245, 14, 14);
+}   
