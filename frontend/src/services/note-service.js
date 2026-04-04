@@ -1,5 +1,5 @@
-// const BACKEND_URL = "https://make-a-note.onrender.com/"; //use during deployment
-const BACKEND_URL = "http://localhost:5000/"; //use during production
+const BACKEND_URL = "https://make-a-note.onrender.com/"; //use during deployment
+// const BACKEND_URL = "http://localhost:5000/"; //use during production
 
 
 //GET route to load notes
