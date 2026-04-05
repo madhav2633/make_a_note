@@ -17,8 +17,9 @@ export default function NoteCard({note, onDelete, onOpen})
                 <p className="card-description" onClick={onOpen}>
                     {note.description}</p>
                 <h6 className="card-date">
-                    {note.timeStamp}</h6>
-                
+                    {note.created_at}</h6>
+                <h6>{note.id}</h6>
+                <h6>{note.ownerId}</h6>
                 <img src={delete_icon}
                 alt="cross_icon"
                 className="del-btn"

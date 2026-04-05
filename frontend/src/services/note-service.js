@@ -1,11 +1,11 @@
-const BACKEND_URL = "https://make-a-note.onrender.com/"; //use during deployment
-// const BACKEND_URL = "http://localhost:5000/"; //use during production
+// const BACKEND_URL = "https://make-a-note.onrender.com/"; //use during deployment
+const BACKEND_URL = "http://localhost:5000/"; //use during production
 
 
-//GET route to load notes
-export async function fetchNotes()
+export async function fetchNotes(userId)
 {
-    const res = await fetch(`${BACKEND_URL}api/notes`);
+    const res = await fetch(`${BACKEND_URL}api/notes?userId=${userId}`);
+
     if(!res.ok)
     {
         throw new Error("Failed to fetch notes from server.");
@@ -14,53 +14,64 @@ export async function fetchNotes()
 };
 
 
-//POST API call to create notes
-export async function createNote(noteTD)
+export async function createNote(note_TDI)
 {
     const res = await fetch(`${BACKEND_URL}api/notes`,
         {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(noteTD)    //sending title and description to server
+            body: JSON.stringify(
+                {
+                    title: note_TDI.title || "",
+                    description: note_TDI.description || "",
+                    owner_id: 1
+                }
+            )
         }
     );
     if(!res.ok)
     {
         throw new Error("Failed to create note on server.");
     }
-    return res.json(); //recieving id,title,description, timestamp
-      
+    return res.json();
 };
 
-//DELETE API call delete notes
-export async function deleteNote(id)
+
+
+export async function deleteNote(noteId)
 {
-    const res = await fetch(`${BACKEND_URL}api/notes/${id}`,
-        {method: "DELETE"}
+    const res = await fetch(`${BACKEND_URL}api/notes/${noteId}`,
+        {
+            method: "DELETE"
+        }
     );
-    const data = await res.json(); //to read the error or success message inside res
     if(!res.ok)
     {
-        throw new Error(data.error || "Failed to delete note.");
+        throw new Error("Failed to delete note.");
     }
-    return data;
+    return res.json();
 };
 
-//PUT API call to edit/update notes
-export async function editNote(modifiedNote)
+
+
+export async function editNote(note)
 {
-    const res = await fetch(`${BACKEND_URL}api/notes/${modifiedNote.id}`,
+    const res = await fetch(`${BACKEND_URL}api/notes/${note.id}`,
         {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(modifiedNote)
+            body: JSON.stringify(
+                {
+                    title: note.id,
+                    description: note.description
+                }
+            )
         }
     );
-    const savedNote = await res.json();
-
     if(!res.ok)
     {
-        throw new Error(savedNote.error || "Unable to edit note.");
+        throw new Error("Failed to edit note on server.");
     }
-    return savedNote;
+    return res.json();
+
 }

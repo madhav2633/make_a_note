@@ -5,7 +5,7 @@ import NoteCard from "./NoteCard";
 import NoteEditor from "./NoteEditor";
 import MessageBox from "../../components/MessageBox";
 
-import { fetchNotes, createNote, editNote, deleteNote } from "../../services/note-service";
+import { fetchNotes, createNote, deleteNote, editNote} from "../../services/note-service";
 
 
 
@@ -41,7 +41,7 @@ export default function NotePage()
         {
             try
             {
-                const data = await fetchNotes(); //API call function in note-service.js
+                const data = await fetchNotes(1); //API call function in note-service.js
                 setNotes(data);
             }catch(err)
             {
@@ -60,7 +60,7 @@ export default function NotePage()
     {
         try
         {
-            const newNote = await createNote(noteTD);   //recieving note with added (ID and time)
+            const newNote = await createNote(noteTD);
             setNotes(oldNote => [...oldNote, newNote]);
             showMessage("New note added.", "success")
         }catch(err)
@@ -71,41 +71,36 @@ export default function NotePage()
         
     }
 
-
     //Deleting note using DELETE route
     async function noteRemover(id)
     {
         try
         {
-            await deleteNote(id); //
-            setNotes(oldNote => oldNote.filter(note => note.id !== id))
-            showMessage("Note removed", "success")
-        }catch(err)
-        {
-            console.error("Failed to delete note:", err);
-            showMessage(err.message || "Unable to delete, try again.", "error");
+            await deleteNote(id);
+            setNotes(old => old.filter(note => note.id !== id));
+            showMessage("Note removed.", "success");
         }
-        
+        catch(err)
+        {
+            showMessage(err.message || "Unable to delete, try again", "error");
+        }
     }
 
-
-    //Editing note using PUT route
+    //Editing a note using PUT route
     async function noteEditor(note)
     {
         try
         {
-            const updatedNote = await editNote(note);
-            setNotes(oldNote => oldNote.map(note => note.id === updatedNote.id ? updatedNote : note))
-        }catch(err)
+            const newNote = await editNote(note);
+            setNotes(old => old.map(note => note.id === newNote.id ? newNote : note));
+        }
+        catch(err)
         {
-            console.error("Unable to save changes, try again.", err);
+            console.error("Unable to save changes:", err);
             showMessage(err.message || "Unable to save changes, try again.", "error");
         }
         
-    };
-
-
-
+    }
 
     
     return(
