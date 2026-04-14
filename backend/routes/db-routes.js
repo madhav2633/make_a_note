@@ -1,16 +1,18 @@
 const express = require('express');
+const authMiddleware = require('../middleware/auth');
 const router = express.Router();
 const connection = require('../database').promise();
 
 
 //Fetch notes 
-router.get('/', async (req, res) =>
+router.get('/', authMiddleware, async (req, res) =>
 {
     try
     {
         
-        const userId = Number(req.query.userId);
-        const [rows] = await connection.query(
+        const userId = Number(req.user.userId);
+
+const [rows] = await connection.query(
             `select
                 note_id as id,
                 title, description,
@@ -29,15 +31,13 @@ router.get('/', async (req, res) =>
 
 
 //Create new note using POST
-router.post('/', async (req, res) =>
+router.post('/', authMiddleware, async (req, res) =>
 {
     try
     {
-        const {title = '', description = '', owner_id} = req.body;
-        if(!owner_id)
-        {
-            return res.status(400).json({error: "owner_id is required"});
-        }
+        const {title = '', description = ''} = req.body;
+        const owner_id = req.user.userId;
+
         const [result] = await connection.query(
             `insert into notes (title, description, owner_id)
             values (?, ?, ?)`, [title, description, owner_id]
@@ -54,7 +54,7 @@ router.post('/', async (req, res) =>
             return res.status(500).json({error: "Failed to fetch created note"});
         }
 
-        res.status(200).json(rows[0]);
+        res.status(201).json(rows[0]);
         
 
     }catch(err)
@@ -67,18 +67,19 @@ router.post('/', async (req, res) =>
 
 
 //Delete a note using DELETE route
-router.delete('/:id', async(req, res) =>
+router.delete('/:id', authMiddleware, async(req, res) =>
 {
     try
     {
         const noteId = Number(req.params.id);
+        const owner_id = req.user.userId;
         if(!noteId)
         {
             return res.status(400).json({error: "Note ID is required"});
         }
 
         const [result] = await connection.query(
-            `delete from notes where note_id = ?`, [noteId]
+            `delete from notes where note_id = ? and owner_id = ?`, [noteId, owner_id]
         );
         if(result.affectedRows === 0)
         {
@@ -94,18 +95,19 @@ router.delete('/:id', async(req, res) =>
 });
 
 //Edit a note using PUT route
-router.put('/:id', async (req, res) =>
+router.put('/:id', authMiddleware, async (req, res) =>
 {
     try
     {
         const noteId = Number(req.params.id);
         const {title = '', description = ''} = req.body;
+        const owner_id = req.user.userId;
         
         const [result] = await connection.query(
             `update notes
                 set title = ?, description = ?
-                    where note_id = ?`,
-                    [title, description, noteId]
+                    where note_id = ? and owner_id = ?`,
+                    [title, description, noteId, owner_id]
         );
 
         if(result.affectedRows === 0)

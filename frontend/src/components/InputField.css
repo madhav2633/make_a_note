@@ -1,0 +1,51 @@
+.input-wrapper{
+    margin: 0 auto;
+    width: 90%;
+    position: relative;
+}
+
+.input-field{
+    margin: 0 auto;
+    height: 45px;
+    width: 100%;
+    border-radius: 8px;
+    color: black;
+    border: solid;
+    border-color: rgba(131, 236, 255, 0);
+    border-width: 2px;
+    padding: 12px;
+    padding-left: 30px;
+    background-color: rgb(255, 255, 255);
+    font-family: roboto;
+    font-size: 14px;
+}
+
+.icon{
+    width: 18px;
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.toggle-icon-pw{
+    position: absolute;
+    width: 18px;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.input-field:focus{
+    outline: none;
+    border: solid;
+    border-width: 2px;
+    border-color: rgb(131, 236, 255);
+}
+
+.input-field.error{
+    outline: none;
+    border: solid;
+    border-width: 2px;
+    border-color: rgb(255, 129, 104);
+}

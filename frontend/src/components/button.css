@@ -1,0 +1,61 @@
+.btn{
+    margin: 0 auto;
+    height: 45px;
+    width: 90%;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: roboto;
+    font-size: 16px;
+
+}
+
+.btn:active{
+    transform: scale(0.95);
+    transition: 0.2s ease;
+}
+
+.btn.login:hover{
+    background-color: rgb(50, 107, 192);
+    transition: 0.2s ease;
+}
+
+.btn.login{
+    background-color: rgb(66, 127, 219);
+}
+
+.btn.signup-redirect{
+    background-color: rgb(133, 95, 178);
+}
+
+.btn.signup-redirect:hover{
+    background-color: rgb(106, 75, 144);
+    transition: 0.2s ease;
+}
+
+.btn.btn.create-account{
+    background-color: rgb(66, 127, 219);
+}
+
+.btn.create-account:hover{
+    background-color: rgb(50, 107, 192);
+    transition: 0.2s ease;
+}
+
+.btn.reset-button{
+    background-color: rgb(66, 127, 219);
+}
+
+.btn.reset-button:hover{
+    background-color: rgb(50, 107, 192);
+    transition: 0.2s ease;
+}
+
+.btn.login-redirect{
+    background-color: rgb(133, 95, 178);
+}
+
+.btn.login-redirect:hover{
+    background-color: rgb(106, 75, 144);
+    transition: 0.2s ease;
+}

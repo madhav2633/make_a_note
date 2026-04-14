@@ -2,9 +2,15 @@
 const BACKEND_URL = "http://localhost:5000/"; //use during production
 
 
-export async function fetchNotes(userId)
+export async function fetchNotes()
 {
-    const res = await fetch(`${BACKEND_URL}api/notes?userId=${userId}`);
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${BACKEND_URL}api/notes`,
+        {
+            headers: {"Authorization": `Bearer ${token}`}
+        }
+    );
 
     if(!res.ok)
     {
@@ -14,17 +20,22 @@ export async function fetchNotes(userId)
 };
 
 
+
+
 export async function createNote(note_TDI)
 {
+    const token = localStorage.getItem("token");
     const res = await fetch(`${BACKEND_URL}api/notes`,
         {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
             body: JSON.stringify(
                 {
                     title: note_TDI.title || "",
                     description: note_TDI.description || "",
-                    owner_id: 1
                 }
             )
         }
@@ -40,9 +51,12 @@ export async function createNote(note_TDI)
 
 export async function deleteNote(noteId)
 {
+    const token = localStorage.getItem("token");
+
     const res = await fetch(`${BACKEND_URL}api/notes/${noteId}`,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {"Authorization": `Bearer ${token}`}
         }
     );
     if(!res.ok)
@@ -56,13 +70,18 @@ export async function deleteNote(noteId)
 
 export async function editNote(note)
 {
+    const token = localStorage.getItem("token");
+    
     const res = await fetch(`${BACKEND_URL}api/notes/${note.id}`,
         {
             method: "PUT",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
             body: JSON.stringify(
                 {
-                    title: note.id,
+                    title: note.title,
                     description: note.description
                 }
             )

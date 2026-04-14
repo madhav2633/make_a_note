@@ -7,9 +7,16 @@ app.use(cors());
 app.use(express.json());
 
 const notesRouter = require("./routes/db-routes")
+const usersRouter = require("./routes/users-routes")
 
 
 app.use("/api/notes", notesRouter);
+
+app.use("/api/users", usersRouter);
+
+
+
+
 
 
 

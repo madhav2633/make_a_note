@@ -4,6 +4,8 @@ import NoteWriter from "./NoteWriter";
 import NoteCard from "./NoteCard";
 import NoteEditor from "./NoteEditor";
 import MessageBox from "../../components/MessageBox";
+import { useNavigate} from "react-router-dom";
+import user_img from "../../assets/user_img.png";
 
 import { fetchNotes, createNote, deleteNote, editNote} from "../../services/note-service";
 
@@ -15,7 +17,9 @@ export default function NotePage()
     const [notes, setNotes] = useState([])
     const [selectedCard, setSelectedCard]= useState(null);
     const [message, setMessage] = useState([]);
+    const [dropdown, setDropdown] = useState(false);
 
+    const navigate = useNavigate();
 
     //Notification system
     function showMessage(text, type)
@@ -41,7 +45,7 @@ export default function NotePage()
         {
             try
             {
-                const data = await fetchNotes(1); //API call function in note-service.js
+                const data = await fetchNotes(); //API call function in note-service.js
                 setNotes(data);
             }catch(err)
             {
@@ -49,7 +53,8 @@ export default function NotePage()
                 showMessage(err.message || "Loading failed, try again.", "error");
             }
         }
-        loadNote();
+        
+        setTimeout(() => {loadNote()}, 2000)
     }
     , []);
     
@@ -102,15 +107,46 @@ export default function NotePage()
         
     }
 
+    function logoutHandler()
+    {
+        localStorage.removeItem("token");
+        navigate("/login");
+    }
+
     
     return(
         
         <div className="note-page">
-            <div className="nav-bar">MAKE A NOTE</div>
+            <div className="nav-bar">
+                <div className="nav-left"></div>
+                <div className="nav-mid">MAKE A NOTE</div>
+                <div className="nav-right"> 
+                    <img src={user_img} alt="user_image" className="user-img"
+                        onClick={() => setDropdown(prev => !prev)}
+                    ></img>
+                {dropdown && (
+                    <div className="dropdown-menu">
+                        <div className="dropdown-item">Edit profile</div>
+                        <div className="dropdown-item"
+                            onClick={logoutHandler}
+                        >Logout</div>
+                    </div>
+                    )}
+                </div>
+            </div>
+            <br/>
 
             <div className="note-writer">
                 <NoteWriter onAdd={noteCreator} showMessage={showMessage}/>
             </div>
+
+            {!notes.length && 
+                <div className="no-notes">
+                    <div className="loader"></div>
+                    <p>One day this place will be full of ideas, poetry and grocery list... or people you want to slap.</p>
+                </div>
+            }
+            
             
             <div className="note-section">
                 {notes
