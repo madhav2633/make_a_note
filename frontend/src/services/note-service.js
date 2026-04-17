@@ -1,14 +1,13 @@
 // const BACKEND_URL = "https://make-a-note.onrender.com/"; //use during deployment
-const BACKEND_URL = "http://localhost:5000/"; //use during production
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; //use during production
 
 
 export async function fetchNotes()
 {
-    const token = localStorage.getItem("token");
 
     const res = await fetch(`${BACKEND_URL}api/notes`,
         {
-            headers: {"Authorization": `Bearer ${token}`}
+            credentials: "include"
         }
     );
 
@@ -30,8 +29,8 @@ export async function createNote(note_TDI)
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
             },
+            credentials: "include",
             body: JSON.stringify(
                 {
                     title: note_TDI.title || "",
@@ -56,7 +55,7 @@ export async function deleteNote(noteId)
     const res = await fetch(`${BACKEND_URL}api/notes/${noteId}`,
         {
             method: "DELETE",
-            headers: {"Authorization": `Bearer ${token}`}
+            credentials: "include"
         }
     );
     if(!res.ok)
@@ -77,8 +76,8 @@ export async function editNote(note)
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
             },
+            credentials: "include",
             body: JSON.stringify(
                 {
                     title: note.title,

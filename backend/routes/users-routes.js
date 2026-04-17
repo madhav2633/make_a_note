@@ -3,10 +3,24 @@ const router = express.Router();
 const connection = require("../database").promise();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const authMiddleware = require("../middleware/auth");
 
-const JWT_SECRET = "my_super_secret_key";
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 
+//route to check if user is logged in so redirecting page can work 
+router.get("/me", authMiddleware, (req, res) =>
+{
+    res.json({user: req.user});
+});
+
+//logout
+router.post("/logout", (req, res) =>
+{
+    res.clearCookie("token");
+    res.json({message: "Logged out"});
+});
 
 
 //login - user verification
@@ -41,13 +55,21 @@ router.post('/login', async (req, res) =>
                 userId: userData.user_id,
                 username: userData.username,
                 role: userData.role,
-            }, JWT_SECRET, {expiresIn: "1h"}
+            }, JWT_SECRET, {expiresIn: "7d"}
         );
+
+        res.cookie("token", token,
+            {
+                httpOnly: true,
+                secure: false,
+                sameSite: "lax",
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            }
+        )
 
         res.status(200).json(
             {
                 success: "Login successuful",
-                token: token
             }
         );
 

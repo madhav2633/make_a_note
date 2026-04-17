@@ -15,7 +15,7 @@ export default function SignupPage()
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState({});
     const navigate = useNavigate();
-    const BACKEND_URL = "http://localhost:5000/";
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     function validation()
     {
@@ -68,14 +68,20 @@ export default function SignupPage()
     async function handleSignup()
     {
         if(!validation()) return;
+
         try
         {
-            const data = await createAccount();
-            console.log("Signup success: ", data)
+            await createAccount();
+
+            // IMPORTANT: clear existing session
+            await fetch(`${BACKEND_URL}api/users/logout`, {
+                method: "POST",
+                credentials: "include"
+            });
+
             navigate("/login");
-            
-        }catch(err)
-        {
+
+        } catch(err) {
             setError(prev => ({...prev, username: err.message}));
         }
     }

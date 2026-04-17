@@ -1,20 +1,18 @@
-import { jwtDecode } from "jwt-decode";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-export function isTokenValid()
+export async function checkAuth()
 {
-    const token = localStorage.getItem("token");
-    if(!token)
-    {
-        return false;
-    }
     try
     {
-        const decoded = jwtDecode(token);
-        return decoded.exp > Date.now() / 1000;
-
-    }catch
+        const res = await fetch(`${BACKEND_URL}api/users/me`,
+        {
+            credentials: "include"
+        });
+        return res.ok;
+    }catch(err)
     {
         return false;
     }
+    
 }
 

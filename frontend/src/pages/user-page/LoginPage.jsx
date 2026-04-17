@@ -1,6 +1,5 @@
 import { useNavigate} from "react-router-dom"
 import { useEffect, useState } from "react";
-import { isTokenValid } from "../../services/authFrontend";
 
 import "./LoginPage.css"
 import InputField from "../../components/InputField";
@@ -9,13 +8,15 @@ import Button from "../../components/Button";
 import user_icon from "../../assets/user_icon.svg"
 import password_icon from "../../assets/password_icon.svg"
 
+import { checkAuth } from "../../services/authFrontend";
+
 export default function LoginPage()
 {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState({});
 
-    const BACKEND_URL = "http://localhost:5000/";
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     
     const navigate = useNavigate();
 
@@ -48,9 +49,7 @@ export default function LoginPage()
         if(!validation()) return;
         try
         {
-
-            const data = await authLogin();
-            localStorage.setItem("token", data.token);
+            await authLogin();
             navigate("/notes");
         
         }catch(err)
@@ -69,6 +68,7 @@ export default function LoginPage()
             {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
+                credentials: "include",
                 body: JSON.stringify(loginData)
             }
         );
@@ -96,12 +96,17 @@ export default function LoginPage()
 
 
     useEffect(() =>
-    {
-        if (isTokenValid())
         {
-            navigate("/notes", {replace: true});
-        }
-    }, []);
+            async function verify()
+            {
+                const ok = await checkAuth();
+                if (ok)
+                {
+                    navigate("/notes", { replace: true });
+                }
+            }
+            verify();
+        }, []);
 
 
 

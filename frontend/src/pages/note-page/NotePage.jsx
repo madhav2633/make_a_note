@@ -107,10 +107,25 @@ export default function NotePage()
         
     }
 
-    function logoutHandler()
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+    async function logoutHandler()
     {
-        localStorage.removeItem("token");
-        navigate("/login");
+        try
+        {
+            await fetch(`${BACKEND_URL}api/users/logout`,
+                {
+                    method: "POST",
+                    credentials: "include"
+                }
+            );
+            navigate("/login");
+        
+        }catch(err)
+        {
+            console.error("Logout failed:", err);
+        }
+        
     }
 
     
