@@ -7,7 +7,7 @@ if(!process.env.JWT_SECRET)
 }
 
 // const FRONTEND_URL = "http://localhost:5173";
-const FRONTEND_URL = "https://make-notes-y62j.onrender.com/";
+const FRONTEND_URL = "https://make-notes-y62j.onrender.com";
 
 const express = require("express");
 const app = express();
