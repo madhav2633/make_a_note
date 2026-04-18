@@ -6,6 +6,9 @@ if(!process.env.JWT_SECRET)
     process.exit(1);
 }
 
+// const FRONTEND_URL = "http://localhost:5173";
+const FRONTEND_URL = "https://make-notes-y62j.onrender.com/";
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -15,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors(
     {
-        origin: "http://localhost:5173",
+        origin: FRONTEND_URL,
         credentials: true
     }
 ));

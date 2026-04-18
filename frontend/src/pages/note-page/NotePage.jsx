@@ -8,6 +8,7 @@ import { useNavigate} from "react-router-dom";
 import user_img from "../../assets/user_img.png";
 
 import { fetchNotes, createNote, deleteNote, editNote} from "../../services/note-service";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 
@@ -107,7 +108,7 @@ export default function NotePage()
         
     }
 
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    
 
     async function logoutHandler()
     {
