@@ -1,7 +1,7 @@
 const express = require('express');
 const authMiddleware = require('../middleware/auth');
 const router = express.Router();
-const connection = require('../database').promise();
+const connection = require('../database');
 
 
 //Fetch notes 
