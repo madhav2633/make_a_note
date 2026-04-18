@@ -13,12 +13,12 @@ export default function App()
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/login" element={<LoginPage/>} />;
+                <Route path="/login" element={<LoginPage/>} />
                 <Route path="/notes"
                 element = {
                     <ProtectedRoute><NotePage/></ProtectedRoute>
                 }/>
-                <Route path="/signup" element={<SignupPage/>} />;
+                <Route path="/signup" element={<SignupPage/>} />
                 <Route path="/reset-password" element={<ResetPasswordPage/>} />
             </Routes>
         </BrowserRouter>
