@@ -23,6 +23,35 @@ router.post("/logout", (req, res) =>
 });
 
 
+//reset password
+router.post('/resetPassword', async(req, res) =>
+{
+    try
+    {
+        const username = req.body.username;
+        const newPassword = req.body.newPassword;
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        const [check] = await connection.query(
+            `select username from users where username = ?`,[username]
+        );
+        if(check.length === 0)
+        {
+            return res.status(404).json({error: "Username is invalid"});
+        }
+        await connection.query(
+            `update users set password_hash = ? where username = ?`, [hashedPassword, username]
+        );
+
+        res.status(200).json({success: "Password change successful."});
+
+    }catch(err)
+    {
+        return res.status(400).json({error: "Server error"});
+    }
+});
+
+
 //login - user verification
 router.post('/login', async (req, res) =>
 {
@@ -70,6 +99,7 @@ router.post('/login', async (req, res) =>
         res.status(200).json(
             {
                 success: "Login successuful",
+                username: userData.username
             }
         );
 
