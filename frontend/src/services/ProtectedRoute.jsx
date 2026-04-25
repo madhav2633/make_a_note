@@ -8,9 +8,16 @@ export default function ProtectedRoute({ children }) {
 
     useEffect(() => {
         async function verify() {
-            const ok = await checkAuth();
-            setIsAuth(ok);
-            setLoading(false);
+            const data = await checkAuth();
+            if(!data)
+            {
+                setIsAuth(false);
+            }else
+            {
+                setIsAuth(true);
+                setLoading(false);
+            }
+            
         }
 
         verify();

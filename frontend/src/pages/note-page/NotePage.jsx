@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./NotePage.css";
 import NoteWriter from "./NoteWriter";
 import NoteCard from "./NoteCard";
 import NoteEditor from "./NoteEditor";
 import MessageBox from "../../components/MessageBox";
-import { useNavigate} from "react-router-dom";
+import InputAction from "../../components/InputAction";
 import user_img from "../../assets/user_img.png";
 
 import { fetchNotes, createNote, deleteNote, editNote} from "../../services/note-service";
+import {checkAuth} from "../../services/authFrontend";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-
 
 
 export default function NotePage()
@@ -19,8 +19,13 @@ export default function NotePage()
     const [selectedCard, setSelectedCard]= useState(null);
     const [message, setMessage] = useState([]);
     const [dropdown, setDropdown] = useState(false);
+    const [displayUsername, setDisplayUsername] = useState("not logged in");
+    const [shareModal, setShareModal] = useState(null);
+    const [noteParticipants, setNoteParticipants] = useState({});
+    const dropDownRef = useRef(null);
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     //Notification system
     function showMessage(text, type)
@@ -38,6 +43,22 @@ export default function NotePage()
         }, 3000)
     };
     
+    //load note participants
+    async function loadParticipants(noteId)
+    {
+        try
+        {
+            const res = await fetch(`${BACKEND_URL}api/notes/share/${noteId}`,
+                {credentials: "include"}
+            );
+            const data = await res.json();
+            setNoteParticipants(prev => ({...prev, [noteId]: data}));
+
+        }catch(err)
+        {
+            console.error(err);
+        }
+    }
 
     //Fetching notes from backend GET route
     useEffect(() =>
@@ -48,6 +69,10 @@ export default function NotePage()
             {
                 const data = await fetchNotes(); //API call function in note-service.js
                 setNotes(data);
+                data.forEach(note => 
+                {
+                    loadParticipants(note.id);
+                });
             }catch(err)
             {
                 console.error("Failed to load notes:", err);
@@ -55,10 +80,48 @@ export default function NotePage()
             }
         }
         
-        setTimeout(() => {loadNote()}, 2000)
+        setTimeout(() => {loadNote()}, 500)
     }
     , []);
-    
+
+    //showing username in nav bar
+    useEffect(() =>
+    {
+    async function showUsername()
+    {
+        const data = await checkAuth();
+        if(data)
+        {
+            setDisplayUsername(data.user.username);
+        }
+    }
+    showUsername();
+    },[]);
+
+    //dropdown logic
+    useEffect(() =>
+    {
+        if(!dropdown) return;
+        function handleClickOutside(e)
+        {
+            if(dropDownRef.current && !dropDownRef.current.contains(e.target))
+            {
+                setDropdown(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {document.removeEventListener("mousedown", handleClickOutside)};
+    },[dropdown])
+
+    //welcome message on login
+    useEffect(() =>
+    {
+        if(location.state?.message)
+        {
+            showMessage(location.state.message, "success");
+            navigate(location.pathname, {replace: true, state: {}});
+        }
+    }, []);
 
 
     //Note creation using ADD route
@@ -108,8 +171,6 @@ export default function NotePage()
         
     }
 
-    
-
     async function logoutHandler()
     {
         try
@@ -129,14 +190,20 @@ export default function NotePage()
         
     }
 
+
+    
+
+
     
     return(
         
-        <div className="note-page">
+        <div className="note-page" >
+            
             <div className="nav-bar">
                 <div className="nav-left"></div>
                 <div className="nav-mid">MAKE A NOTE</div>
-                <div className="nav-right"> 
+                <div className="nav-right" ref={dropDownRef}>
+                    <p className="username-txt">{displayUsername}</p>
                     <img src={user_img} alt="user_image" className="user-img"
                         onClick={() => setDropdown(prev => !prev)}
                     ></img>
@@ -170,6 +237,11 @@ export default function NotePage()
                     .map(note => (<NoteCard key={note.id} note={note}
                     onDelete={() => noteRemover(note.id)}
                     onOpen={() => setSelectedCard(note)}
+                    openShareOption={() => setShareModal(note)}
+                    sharedUsers = {noteParticipants[note.id] || []}
+                    
+                    
+
                     />))}
             </div>
             
@@ -186,8 +258,14 @@ export default function NotePage()
                     message.map(msg => (<MessageBox
                             text={msg.text} type={msg.type} key ={msg.id}/>))    
                 }
-            </div> 
-
+            </div>
+            
+            {shareModal && <InputAction
+                note = {shareModal}
+                onCross={() => setShareModal(null)}
+                showMessage={showMessage}
+                
+            />}
         </div>
     )
 }

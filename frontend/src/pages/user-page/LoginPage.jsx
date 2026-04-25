@@ -1,9 +1,11 @@
 import { useNavigate} from "react-router-dom"
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import "./LoginPage.css"
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
+import MessageBox from "../../components/MessageBox";
 
 import user_icon from "../../assets/user_icon.svg"
 import password_icon from "../../assets/password_icon.svg"
@@ -15,10 +17,29 @@ export default function LoginPage()
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState({});
+    const [message, setMessage] = useState([]);
 
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     
     const navigate = useNavigate();
+    const location = useLocation();
+
+
+    //Notification system
+    function showMessage(text, type)
+    {
+        const msg = 
+        {
+            id: Date.now(),
+            text: text,
+            type: type
+        }
+        setMessage(oldMsg => [...oldMsg, msg]);
+        setTimeout(() =>
+        {
+            setMessage(oldMsg => oldMsg.filter(m => m.id !== msg.id));
+        }, 3000)
+    };
 
 
     function validation()
@@ -49,8 +70,13 @@ export default function LoginPage()
         if(!validation()) return;
         try
         {
-            await authLogin();
-            navigate("/notes");
+            const logUser = await authLogin();
+            
+            navigate("/",
+                {
+                    state: {message: `Welcome ${logUser.username}`}
+                }
+            );
         
         }catch(err)
         {
@@ -94,6 +120,18 @@ export default function LoginPage()
         navigate("/reset-password");
     }
 
+    useEffect(() =>
+    {
+        if(location.state?.message)
+        {
+            showMessage(location.state.message, "success");
+            navigate(location.pathname, {
+                replace: true,
+                state: {}
+            });
+        }
+    },[]);
+
 
     useEffect(() =>
         {
@@ -102,7 +140,7 @@ export default function LoginPage()
                 const ok = await checkAuth();
                 if (ok)
                 {
-                    navigate("/notes", { replace: true });
+                    navigate("/", { replace: true });
                 }
             }
             verify();
@@ -180,6 +218,13 @@ export default function LoginPage()
                         variant="signup-redirect"
                         onClick={signupRedirect}
                         >Signup</Button>
+                    </div>
+
+                    <div className="message-container">
+                        {message.length !== 0 &&
+                            message.map(msg => (<MessageBox
+                            text={msg.text} type={msg.type} key ={msg.id}/>))    
+                        }
                     </div>
                 </form>
             </div>

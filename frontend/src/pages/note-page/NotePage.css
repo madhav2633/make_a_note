@@ -24,22 +24,29 @@
 }
 
 .nav-right{
-    width: 70px;
+    width: 200px;
     position: relative;
     display: flex;
     justify-content: end;
+    align-items: center;
 }
 .nav-left{
-    width: 70px;
+    width: 200px;
     position: relative;
     display: flex;
+    height: 10px;
 }
+.username-txt{
+    font-size: 14px;
+    font-weight: 500;
 
-
+}
 
 .user-img{
     width: 30px;
+    height: 30px;
     cursor: pointer;
+    margin-left: 6px;
     
 }
 

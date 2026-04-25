@@ -1,5 +1,4 @@
-// const BACKEND_URL = "https://make-a-note.onrender.com/"; //use during deployment
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; //use during production
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 export async function fetchNotes()
@@ -23,7 +22,6 @@ export async function fetchNotes()
 
 export async function createNote(note_TDI)
 {
-    const token = localStorage.getItem("token");
     const res = await fetch(`${BACKEND_URL}api/notes`,
         {
             method: "POST",

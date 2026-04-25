@@ -8,7 +8,13 @@ export async function checkAuth()
         {
             credentials: "include"
         });
-        return res.ok;
+        if(!res.ok)
+        {
+            return null;
+        }
+
+        const data = await res.json();
+        return data;
     }catch(err)
     {
         return false;

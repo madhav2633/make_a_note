@@ -24,6 +24,16 @@ export default function NoteEditor({onClose, note, onSave})
         
     }
 
+    const formattedDate = new Date(note.created_at).toLocaleString([],
+        {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        })
+
 
 
     return (
@@ -42,7 +52,7 @@ export default function NoteEditor({onClose, note, onSave})
                         onChange = {(e) => {setDescription(e.target.value)}}
                     />
                     
-                    <p className="time">Created at: {note.timeStamp}</p>
+                    <p className="time">Created at: {formattedDate}</p>
 
                 </div>
 

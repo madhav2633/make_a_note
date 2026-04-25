@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./SignupPage.css";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
@@ -56,7 +56,6 @@ export default function SignupPage()
     }
 
     let mismatch = false;
-
     if(confirmPassword.length > 0)
     {
         if (confirmPassword !== password)
@@ -73,7 +72,7 @@ export default function SignupPage()
         {
             await createAccount();
 
-            // IMPORTANT: clear existing session
+            //clear existing session
             await fetch(`${BACKEND_URL}api/users/logout`, {
                 method: "POST",
                 credentials: "include"
@@ -169,6 +168,7 @@ export default function SignupPage()
 
                     <Button
                         variant="create-account"
+                        type="button"
                         onClick={handleSignup}
                 
                     >Create Account</Button>

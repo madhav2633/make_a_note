@@ -85,6 +85,67 @@
     transition: 0.2s ease;
 }
 
+.share-option{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    bottom: 1px;
+    left: 6px;
+    height: 22px;
+
+}
+
+.share_icon{
+    width: 16px;
+    margin-right: 6px;
+}
+
+.shared-to-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: -2px;
+    background-color: rgb(1, 159, 170);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: solid;
+    border-width: 1px;
+    border-color: rgb(176, 196, 196);
+}
+.shared-to-icon p{
+    color: rgb(206, 206, 206);
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.owner-icon{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    top: 5px;
+    left: 6px;
+    background-color: rgb(223, 220, 1);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
+
+.owner-icon p{
+    color: rgb(255, 0, 0);
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+
+
 .card-title:hover ~ .del-btn {
     opacity: 1;
 }
