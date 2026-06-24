@@ -11,6 +11,12 @@ router.post('/', authMiddleware, async (req, res) =>
     {
         const noteId = req.body.noteId;
         const username = req.body.username;
+        const ownerUsername = req.user.username;
+
+        if(username === ownerUsername)
+        {
+            return res.status(400).json({error: "You already have access to this note."});
+        }
 
         const [result] = await connection.query(
             `select user_id from users where username = ?`, [username]
@@ -22,6 +28,8 @@ router.post('/', authMiddleware, async (req, res) =>
         }
 
         const userId = result[0].user_id;
+
+        
 
         const [rows] = await connection.query(
             `insert into note_access (note_id, user_id)
