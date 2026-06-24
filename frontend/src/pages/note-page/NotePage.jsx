@@ -264,6 +264,7 @@ export default function NotePage()
                 note = {shareModal}
                 onCross={() => setShareModal(null)}
                 showMessage={showMessage}
+                loadParticipants={loadParticipants}
                 
             />}
         </div>

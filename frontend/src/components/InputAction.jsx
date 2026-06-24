@@ -4,7 +4,7 @@ import close_icon from "../../src/assets/close_icon.svg";
 import delete_icon from "../../src/assets/delete_icon.svg"
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-export default function InputAction({onCross, note, showMessage})
+export default function InputAction({onCross, note, showMessage, loadParticipants})
 {
     const [username, setUsername] = useState("");
     const [sharedUsers, setSharedUsers] = useState([]);
@@ -40,7 +40,8 @@ export default function InputAction({onCross, note, showMessage})
                 return;
             }
             showMessage(result.success, "success");
-            loadParticipants();
+            loadModalParticipants();
+            loadParticipants(note.id);
         }catch(err)
         {
             console.error(err);
@@ -49,8 +50,8 @@ export default function InputAction({onCross, note, showMessage})
 
     }
 
-    //load list of participants of a note
-    async function loadParticipants()
+    //function to load list of participants of a note
+    async function loadModalParticipants()
     {
         try
         {
@@ -74,7 +75,7 @@ export default function InputAction({onCross, note, showMessage})
     useEffect(() =>
     {
         if(!note?.id) return;
-        loadParticipants();
+        loadModalParticipants();
     },[note])
 
         
@@ -105,7 +106,8 @@ export default function InputAction({onCross, note, showMessage})
 
             showMessage(result.success, "success");
             
-            loadParticipants();
+            await loadModalParticipants();
+            await loadParticipants(note.id);
         }catch(err)
         {
             console.error(err);
