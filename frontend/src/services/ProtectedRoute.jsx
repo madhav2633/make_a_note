@@ -12,6 +12,7 @@ export default function ProtectedRoute({ children }) {
             if(!data)
             {
                 setIsAuth(false);
+                setLoading(false);
             }else
             {
                 setIsAuth(true);
